@@ -1,37 +1,38 @@
-const {getAllTodosUsers, getTodoUsersById, updateUserr, createTodo, deleteTodo}= require('./users.controllers')
+const {getAllUsers, getUserById, createNewUser, deleteUser, updateUser}= require('./users.controllers')
 
-const getTodos=(req, res)=>
+const getUsers=(req, res)=>
+
 {
-const data=getAllTodosUsers()
+const data=getAllUsers()
 res.status(200).json(data)
-}
+};
 
 const getUsersById=(req,res)=>{
     const id= req.params.id
-    const data =getTodoUsersById(id)
+    const data =getUserById(id)
     if(data){
         res.status(200).json(data)
     } else {
         res.status(404).json({id: id, message: 'Invalid ID'})
     }
-}
+};
 
-const createNewTask = (req, res) => {
-    const { title } = req.body
+const createNewUsers = (req, res) => {
+    const data = req.body
 
-    if(title){
-        const data = createTodo(title)
-        res.status(201).json(data)
+    if(data.first_name && data.last_name && data.email, data.password && data.birthday){
+        const userCreation= createNewUser(data)
+        res.status(201).json(userCreation)
     } else {
         res.status(400).json({message: 'Missing Data'})
     }
-}
+};
 
-const updateUser=(req,res)=>{
+const updateUsers=(req,res)=>{
     const id= req.params.id  
-    const { title } = req.body
-    const data =updateUserr(id,title)
-    if(data){
+    const data= req.body
+    const  usersUpdate =updateUser(id,data.first_name, data.last_name, data.email, data.password, data.birthday)
+    if(usersUpdate){
         res.status(200).json(data)
     } else {
         res.status(404).json({id: id, message: 'Invalid ID'})
@@ -39,9 +40,9 @@ const updateUser=(req,res)=>{
 }
 
 
-const deleteUser=(req,res)=>{
+const deleteUsers=(req,res)=>{
     const id= req.params.id
-    const data =deleteTodo(id)
+    const data =deleteUser(id)
     if(data){
         res.status(200).json(data)
     } else {
@@ -52,16 +53,16 @@ const deleteUser=(req,res)=>{
 
 
 module.exports ={
-    getTodos, 
+    getUsers, 
     getUsersById, 
-    createNewTask, 
-    deleteUser,
-    updateUser
+    createNewUsers, 
+    deleteUsers,
+    updateUsers
+// }
+
+
+
+
 }
-
-
-
-
-
 
 
